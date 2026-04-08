@@ -13,11 +13,24 @@ import environ
 import os
 from pathlib import Path
 
+import cloudinary
+import cloudinary.uploader
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env=environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR,'.env'))
+
+
+cloudinary.config( 
+    cloud_name = env('C_CN'), 
+    api_key = env('C_API'), 
+    api_secret = env('C_API_SECRET'), # Click 'View API Keys' above to copy your API secret
+    secure=True
+)
+
+
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,7 +42,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-project-k01t.onrender.com','localhost:8000']
+ALLOWED_HOSTS = ['django-project-k01t.onrender.com','localhost','deploy-pratice-2.onrender.com']
 
 
 # Application definition
@@ -41,7 +54,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hashapp'
+    'hashapp',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -124,3 +139,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+
+default_file_storage='cloudinary_storage.storage.MediaCloudinaryStorage'
